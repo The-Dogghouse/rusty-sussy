@@ -422,7 +422,7 @@ dependencies = [
 
 [[package]]
 name = "rusty-sussy"
-version = "1.0.0"
+version = "0.9.9"
 dependencies = [
  "clap",
  "image",

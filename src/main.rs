@@ -21,24 +21,22 @@ struct Args {
     width: u32
 }
 
-fn load_twerk_frames() -> Vec<DynamicImage> {
-    let mut result: Vec<DynamicImage> = Vec::with_capacity(6);
-
-    for n in 0..6 {
-        result.push(image::open(format!("resources/twerk_imgs/{n}.png")).unwrap());
-    }
-
-    result
-}
-
 fn darken(component: u8) -> u8 {
     ((component as u32 * 2) / 3) as u8
 }
 
 fn main() {
+    let twerk_frames = [
+        image::load_from_memory(include_bytes!("../resources/twerk_imgs/0.png")).unwrap(),
+        image::load_from_memory(include_bytes!("../resources/twerk_imgs/1.png")).unwrap(),
+        image::load_from_memory(include_bytes!("../resources/twerk_imgs/2.png")).unwrap(),
+        image::load_from_memory(include_bytes!("../resources/twerk_imgs/3.png")).unwrap(),
+        image::load_from_memory(include_bytes!("../resources/twerk_imgs/4.png")).unwrap(),
+        image::load_from_memory(include_bytes!("../resources/twerk_imgs/5.png")).unwrap()
+    ];
+
     let args = Args::parse();
 
-    let twerk_frames = load_twerk_frames();
     let twerk_size_x= twerk_frames[0].width();
     let twerk_size_y = twerk_frames[0].height();
 
