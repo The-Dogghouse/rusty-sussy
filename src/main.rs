@@ -12,7 +12,7 @@ struct Args {
     #[arg(short, long)]
     input: PathBuf,
 
-    // Input image
+    // Output image
     #[arg(short, long)]
     output: PathBuf,
 
