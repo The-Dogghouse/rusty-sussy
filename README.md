@@ -7,6 +7,8 @@ A version of the `to_sus` from [Discord Sus Bot](https://github.com/eeibevan/dis
 May be run on its own, or with the [Bone Bot](https://github.com/The-Dogghouse/bone-bot).
 Slightly ~~less~~ more likely to get me made fun of.
 
+Putting the language name in your project is cringe
+but I couldn't pass on this one.
 
 ## Usage
 ### Requirements
