@@ -17,8 +17,8 @@ struct Args {
     output: PathBuf,
 
     // Number of crew-mates to use horizontally
-    #[arg(value_parser = clap::value_parser!(u32).range(1..512),short, long, default_value_t = 21)]
-    width: u32
+    #[arg(value_parser = clap::value_parser ! (u32).range(1..512), short, long, default_value_t = 21)]
+    width: u32,
 }
 
 fn darken(component: u8) -> u8 {
@@ -37,7 +37,7 @@ fn main() {
 
     let args = Args::parse();
 
-    let twerk_size_x= twerk_frames[0].width();
+    let twerk_size_x = twerk_frames[0].width();
     let twerk_size_y = twerk_frames[0].height();
 
     let input_image = image::open(args.input).expect("Failed to open input");
@@ -51,7 +51,7 @@ fn main() {
     let input_image_scaled = input_image.
         resize_exact(output_width, output_height, image::imageops::Nearest)
         .into_rgba8();
-    let mut temp_files:Vec<String> = Vec::with_capacity(twerk_frames.len());
+    let mut temp_files: Vec<String> = Vec::with_capacity(twerk_frames.len());
 
     for frame_num in 0..twerk_frames.len() as i32 {
         let mut background = DynamicImage::new_rgba8(output_px.0, output_px.1);
@@ -67,18 +67,17 @@ fn main() {
 
                 // Re-implementing Python's % operator behavior with negative numbers
                 let twerk_frame: DynamicImage = twerk_frames[((x - y + frame_num).rem_euclid(twerk_frames.len() as i32)) as usize].clone();
-                let mut twerk_result: DynamicImage = twerk_frame.clone(); // Thanks for this Rust...
 
                 for twerk_frame_p in twerk_frame.pixels() {
+                    let result_x = twerk_frame_p.0 + x as u32 * twerk_size_x;
+                    let result_y = twerk_frame_p.1 + y as u32 * twerk_size_y;
                     let [frame_r, frame_g, frame_b, _] = twerk_frame_p.2.0;
                     if frame_r == 214u8 && frame_g == 224u8 && frame_b == 240u8 {
-                        twerk_result.put_pixel(twerk_frame_p.0, twerk_frame_p.1, image::Rgba([in_r, in_g, in_b, 255u8]))
+                        background.put_pixel(result_x, result_y, image::Rgba([in_r, in_g, in_b, 255u8]))
                     } else if frame_r == 131u8 && frame_g == 148u8 && frame_b == 191u8 {
-                        twerk_result.put_pixel(twerk_frame_p.0, twerk_frame_p.1, image::Rgba([darken(in_r), darken(in_g), darken(in_b), 255u8]))
+                        background.put_pixel(result_x, result_y, image::Rgba([darken(in_r), darken(in_g), darken(in_b), 255u8]))
                     }
                 }
-
-                background.copy_from(&twerk_result, x as u32 * twerk_size_x, y as u32 * twerk_size_y).unwrap();
             }
         }
         let tmp_path = format!("resources/tmp/sus-{frame_num}.png");
