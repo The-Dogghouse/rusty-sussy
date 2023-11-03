@@ -22,13 +22,15 @@ rusty-sussy --input=path/to/input/image.png --output=output/path.gif
 
 ### Full Usage
 ```shell
-rusty-sussy [OPTIONS] --input <INPUT> --output <OUTPUT>
+rusty-sussy [OPTIONS] --input <INPUT> --output <OUTPUT> --width <NUMBER>
 ```
 
 #### Options
 `-i`, `--input`: Path to an input image, accepts common image types [jpg, png, etc..]
 
 `-o`, `--output`: Path to place the resulting GIF
+
+`-w`, `--width`: Number of crew-mates to use along the X axis (default: `21`)
 
 `-h`, `--help`: Prints help and usage info
 
