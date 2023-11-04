@@ -1,4 +1,4 @@
-use std::{fs, io};
+use std::{env, fs, io};
 use std::io::Write;
 use image::{DynamicImage, GenericImage, GenericImageView};
 use std::process::Command;
@@ -93,11 +93,18 @@ fn main() {
         .arg("resources/tmp/sus-2.png")
         .arg("resources/tmp/sus-3.png")
         .arg("resources/tmp/sus-4.png")
-        .output()
-        .expect("Failed to run gifski");
+        .output();
 
-    io::stdout().write_all(&o.stdout).unwrap();
-    io::stdout().write_all(&o.stderr).unwrap();
+    // For some reason, we get an error code from `Command`,
+    // if we're not in a full shell env, but the command still works
+    // so, do this dance so we don't crash if we get a benign error
+    if o.is_ok() {
+        let r = o.unwrap();
+        io::stdout().write_all(&r.stdout).unwrap();
+        io::stdout().write_all(&r.stderr).unwrap();
+    } else {
+        eprintln!("Error running gifski: '{}'", o.err().unwrap());
+    }
 
     for file in temp_files {
         fs::remove_file(file.clone())
