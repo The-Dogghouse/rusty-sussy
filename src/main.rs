@@ -1,4 +1,4 @@
-use std::{env, fs, io};
+use std::{fs, io};
 use std::io::Write;
 use image::{DynamicImage, GenericImage, GenericImageView};
 use std::process::Command;
